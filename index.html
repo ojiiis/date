@@ -725,7 +725,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
                 //
               if((e.offsetTop + e.offsetHeight) > 0){
                 e.style.marginTop = e.offsetTop - 20+"px";  
-                console.log(e.offsetTop);
+                //console.log(e.offsetTop);
               }else{
                   clearInterval(re);
               } 
@@ -803,13 +803,15 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
    var b = document.getElementById(b);
    var a = document.getElementById(a);
 
-   b.style.display = "block";
+if(a&&b){
+       b.style.display = "block";
    b.style.animation = "add-auth 0.5s forwards";
       a.style.animation = "remove-auth 0.3s forwards";
    setTimeout(()=>{
        a.style.display = "none";
        document.getElementById("wrapper").scrollTop = 0;
    },500);
+}
    
     }
     
