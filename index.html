@@ -42,7 +42,24 @@
                  
                background-image: url('images/auth-bg.jpg');
                background-position: center;
-               background-size: contain;
+               background-size: cover;
+               background-repeat:no-repeat;
+           }
+           .auth form{
+               position: relative;
+               
+           }
+           .auth form:before{
+               content:"";
+               display: block;
+               position: absolute;
+               left:0;
+               top:0;
+               width: 100%;
+               height: 100%;
+               background: rgb(255,255,255,0.7);
+               
+                z-index: -1;
            }
             @keyframes showcard{
                 from{
