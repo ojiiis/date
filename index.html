@@ -534,7 +534,7 @@
 
                 <div class="input-group">
                     <label>Provide a brief introduction about yourself</label>
-                    <textarea name="about" rols="20" type="text"
+                    <textarea name="about" rows="150" type="text"
                         placeholder="Hello, I am a passionate individual with a love for learning and collaboration."></textarea>
                 </div>
 
@@ -796,12 +796,13 @@
                         case "let-know-you":
                             swapAuth('sign-in', 'let-know-you');
                             swapAuth('sign-up', 'let-know-you');
-
+                       document.getElementById("let-know-you-usersname").innerText = res.data?.fullname;
+                         localStorage.setItem('token', res.token);
                             break;
                         case "add-media":
                             swapAuth('sign-in', 'add-media');
                             swapAuth('let-know-you', 'add-media');
-
+                         localStorage.setItem('token', res.token);
                             break;
                         case "home":
                             removeAuth();
