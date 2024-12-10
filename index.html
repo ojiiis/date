@@ -147,6 +147,11 @@
             display: flex;
             justify-content: space-between;
         }
+        
+        .container {
+            padding: 10px 20px;
+        }
+
 
         .card-btn button,.card-btn button a,
         .card-full-details button {
@@ -159,10 +164,7 @@
             text-decoration: none;
         }
 
-        .container {
-            padding: 10px 20px;
-        }
-
+        
         nav {
             display: none;
         }
@@ -805,25 +807,7 @@
 
         }
 
-         var ci = document.getElementsByClassName("card-images");
-            for (let i of ci) {
-                i.style.backgroundImage = `url("${i.getAttribute("data-src")}")`;
-
-            }
-            var sd = document.getElementsByClassName("show-details"), cd = document.getElementsByClassName("close-details");
-
-            
-            for (let a of cd) {
-                a.onclick = function () {
-                    let t = document.getElementById(this.getAttribute("data-id"));
-
-                    t.style.animation = "none";
-                    t.style.animation = `hidecard 1s forwards`;
-                    t.style.display = "none";
-                    console.log(t);
-
-                }
-            }
+       
         
         document.getElementById("wrapper").ondblclick = function () {
             if (document.getElementsByTagName("nav")[0].style.display == "none") {
@@ -962,7 +946,14 @@
          
      let cover = document.createElement("div");
      cover.classList.add("card-images");
-     cover.setAttribute("data-src",'https://lin.com.ng/love/media/'+item);
+     
+    cover.style.backgroundImage = 'url("https://lin.com.ng/love/media/'+item+'")';
+    
+    
+    
+    
+    
+    
     playCover.appendChild(cover); 
      });
      
@@ -1033,13 +1024,64 @@
     cbtn.appendChild(btn2);  
                           
     
+    const fd = document.createElement("div");
+    fd.classList.add("card-full-details");
+    fd.id = `card_${data.user_id}`;
+    
+    //fullDetails
+    
+    const cn = document.createElement("div"), bbtn = document.createElement("button"), lo2 = document.createElement("div"),lf2 =document.createElement("div"),d12 = document.createElement("div"),d22 = document.createElement("div"),d32 = document.createElement("div"),d42 = document.createElement("div");
+    
+    cn.classList.add("container");
+    bbtn.classList.add("close-details");
+    bbtn.setAttribute("data-id",`card_${data.user_id}`);
+    bbtn.innerText = "Close";
+    bbtn.onclick =  function () {
+                    let t = document.getElementById(this.getAttribute("data-id"));
+
+                    t.style.animation = "none";
+                    t.style.animation = `hidecard 1s forwards`;
+                    t.style.display = "none";
+                    console.log(t);
+
+                }
+    cn.appendChild(bbtn);
+    
+    lo2.classList.add("card-lister");
+    d12.innerText = 'Location';
+    d22.innerText = `${data.city}, ${data.state}.`;
+    lo2.appendChild(d12);
+    lo2.appendChild(d22);
+    const about = document.createElement("div");
+    about.innerHTML = `
+    <div class="card-lister">
+    <div>About</div>
+     <div>${data.about}</div>
+    </div>
+    `;
+    
+    
+    
+    lf2.classList.add("card-lister");
+    d32.innerText = 'Looking for';
+    d42.innerText = data.lookingfor;
+    lf2.appendChild(d32);
+    lf2.appendChild(d42);
+    fd.appendChild(bbtn);
+    fd.appendChild(lo2);
+    fd.appendChild(lf2);
+    fd.appendChild(about);
+    //fullDetails
+    
+    
     playTitle.appendChild(h);
     playTitle.appendChild(lo);
     playTitle.appendChild(lf);
     playTitle.appendChild(cbtn);
     play.appendChild(playCover);
     play.appendChild(playTitle);
-    
+  //  play.insertAdjacentElement("afterend",fd);
+  play.insertBefore(fd,play.parentElement)
      const fullDetails = document.createElement("div");
      console.log(play);
      return play;
