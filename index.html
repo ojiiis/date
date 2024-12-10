@@ -627,6 +627,9 @@
                             case "/profile":
                                 url = "https://lin.com.ng/love/profile/";
                                 break;
+                            case "/logout":
+                    localStorage.setItem("token",null);
+                            break;
                         }
 
                         const req = await fetch(url, {
@@ -651,7 +654,10 @@
                                 case "home":
                                     removeAuth();
                                     break;
+                                
                             }
+                            
+                        
                             if (res?.user.fullname && document.getElementById("let-know-you-usersname")) {
                                 document.getElementById("let-know-you-usersname").innerText = res.user.fullname;
                             }
