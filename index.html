@@ -608,7 +608,7 @@
                         tMediasArray.map((item)=>{
                              tMedias += `<div class="card-images" data-src="https://lin.com.ng/love/media/${item}"></div>`;  
                         });
-                    document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + `<div class="novel-cards play" style="display:block">
+                    document.getElementById("wrapper").innerHTML  = document.getElementById("wrapper").innerHTML + `<div class="novel-cards play" style="display:block">
                <div class="novel-cards-cover">
                ${tMedias}
                </div>
@@ -649,8 +649,9 @@
                      <div>${res?.data[i].about}</div>
                  </div>
                </div>
-            </div><script>runAhead();</script>`;   
+            </div>`;   
                             }
+                            document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + '<script>runAhead();</script>';
                         }
 
 
