@@ -649,7 +649,7 @@
                      <div>${res?.data[i].about}</div>
                  </div>
                </div>
-            </div>`;   
+            </div><script>runAhead();</script>`;   
                             }
                         }
 
@@ -793,6 +793,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
             
         }
         
+function runAhead(){
            var ci = document.getElementsByClassName("card-images");
            for(let i of ci){
                i.style.backgroundImage = `url("${i.getAttribute("data-src")}")`;
@@ -820,7 +821,8 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
             
              } 
           }
-          
+}
+    runAhead();      
           document.getElementById("wrapper").ondblclick = function(){
               if(document.getElementsByTagName("nav")[0].style.display== "none"){
             document.getElementsByTagName("nav")[0].style.display = "block";}else{
