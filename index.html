@@ -494,11 +494,10 @@
                <div class="novel-cards auth" id="add-media">
                 <form class="auth-form">
                 <h2>Add at least two images of youself</h2>
-                
+                <input type="file" id="media" style="display:none">
               <div class="add-media-group">
                 <div class="media-child" id="media-card-btn">
-                    Click to upload picture
-                <input type="file" id="media" style="display:none">
+            Click to upload picture
                 </div>   
                 <div class="media-child uploaded">
                     
@@ -682,12 +681,25 @@
                         if(res?.user.fullname && document.getElementById("let-know-you-usersname")){
                             document.getElementById("let-know-you-usersname").innerText = res.user.fullname;
                         }
+                        if (res?.user.media && document.getElementById("add-media")) {
+                           if(res?.user.media.split(",").length == 4){
+                             document.getElementById("media-card-btn").classList.add("uploaded");
+                             document.getElementById("media-card-btn").setAttribute("id", "");
+                            
+                            }
+                            var uploaded = document.getElementsByClassName("uploaded");
+                            console.log(uploaded);
+                            for (let i = 0; i < uploaded.length; i++) {
+                                uploaded[i].background = `url('https://lin.com.ng/love/media/${res?.user.media.split(",")[i]}')`;
+                            }
+                             //res.user.fullname;
+                         }
                     }
                 }
             )();
          }    
         }
-        if(document.getElementById("location")){
+  if(document.getElementById("location")){
      var loc =   document.getElementById("location");
      if(loc.options.length == 1){
          (
@@ -754,7 +766,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
              data[index] = item;
          });
         try{
-           console.log(this.action);
+          
             const url = (this.action != null)?this.action:"/";
             const req = await fetch(url,{
              method:"POST",
@@ -799,29 +811,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
              }
          }
          if(res.status == 0){
-             document.getElementById("error-card").innerHTML = "";
-             let d = 0;
-             var task = setInterval(function(){
-                 if(d < res.error.length){
-                    var e = document.createElement("span");
-                    e.classList.add("errors");
-                    e.innerText = res.error[d];
-                    e.animation = "displayError 1s forwards";
-                    document.getElementById("error-card").appendChild(e);
-                    d++;
-                    setTimeout(()=>{
-            let re = setInterval(()=>{
-                //
-              if((e.offsetTop + e.offsetHeight) > 0){
-                e.style.marginTop = e.offsetTop - 20+"px";  
-                //console.log(e.offsetTop);
-              }else{
-                  clearInterval(re);
-              } 
-            },50);
-                    },3000);
-                 }
-             },10);
+           displayError(res.error);
          }
         }
             
@@ -920,10 +910,14 @@ if(a&&b){
     }
     
     if(document.getElementById("media-card-btn")){
+        if(document.getElementById("media-card-btn").getAttribute("working") == null || document.getElementById("media-card-btn").getAttribute("working") == 0)
         document.getElementById("media-card-btn").onclick = ()=> document.getElementById("media").click();
     }
     document.getElementById("media").onchange = async function() {
-        document.getElementById("loading")
+        var btn = document.getElementById("media-card-btn");
+        btn.setAttribute("working",1);
+        btn.previousText = "Click to upload picture";
+        btn.innerText = "Uploading...";
         const data = new FormData();
         data.append('media',this.files[0]);
          const req = await fetch('https://lin.com.ng/love/add-media',{
@@ -935,8 +929,39 @@ if(a&&b){
          });
          const res = await req.json();
          console.log(res);
+         btn.setAttribute("working", 0);
+         btn.innerText = "Click to upload picture";
+         if(res.status != 1){
+            displayError(res.error);
+         }else{
+           res.status 
+         }
     }
-    
+    function displayError(er){
+        document.getElementById("error-card").innerHTML = "";
+        let d = 0;
+        var task = setInterval(function () {
+            if (d < er.length) {
+                var e = document.createElement("span");
+                e.classList.add("errors");
+                e.innerText = er[d];
+                e.animation = "displayError 1s forwards";
+                document.getElementById("error-card").appendChild(e);
+                d++;
+                setTimeout(() => {
+                    let re = setInterval(() => {
+                        //
+                        if ((e.offsetTop + e.offsetHeight) > 0) {
+                            e.style.marginTop = e.offsetTop - 20 + "px";
+                            //console.log(e.offsetTop);
+                        } else {
+                            clearInterval(re);
+                        }
+                    }, 50);
+                }, 3000);
+            }
+        }, 10);
+    }
         </script>
     </body>
 </html>
