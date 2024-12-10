@@ -44,12 +44,10 @@
                background-position: center;
                background-size: cover;
                background-repeat:no-repeat;
-           }
-           .auth form{
                position: relative;
-               
-           }
-           .auth form:before{
+            }
+          
+           .auth:before{
                content:"";
                display: block;
                position: absolute;
@@ -59,7 +57,7 @@
                height: 100%;
                background: rgb(255,255,255,0.7);
                
-                z-index: -1;
+                
            }
             @keyframes showcard{
                 from{
@@ -398,7 +396,7 @@
                     <sub>
                         <p>Don't have an accout? <a href="javascript:void(0)" onclick="swapAuth('sign-in','sign-up')">sign up here</a></p>
                     </sub>
-                <button type="submit">Sign in</button>
+                <button type="submit" class="submit">Sign in</button>
                </div>
                </form>
             </div>
@@ -434,7 +432,7 @@
                     <sub>
                         <p>Already have an accout? <a href="javascript:void(0)" onclick="swapAuth('sign-up','sign-in')">sign in here</a></p>
                     </sub>
-                <button type="submit" onclick="">Sign up</button>
+                <button type="submit"  class="submit">Sign up</button>
                </div>
                </form>
             </div>
@@ -475,7 +473,7 @@
           
                 <div class="input-group">
                 
-                <button type="submit" onclick="">Continue</button>
+                <button type="submit"  class="submit">Continue</button>
                </div>
                </form>
             </div>
@@ -503,7 +501,7 @@
                </div>
              <div class="button-group">
                     <button type="button" onclick="swapAuth('add-media','let-know-you')">Back</button>
-                 <button type="button" onclick="removeAuth()">Continue</button>
+                 <button type="submit"  class="submit">Continue</button>
              </div>
                </form>
             </div>
@@ -626,12 +624,48 @@
         <script>
         const webData = (!JSON.parse(localStorage.getItem('web-data'))==null)?JSON.parse(localStorage.getItem('web-data')):{};
         window.onload= function (){
-          if(webData.hasOwnProperty("auth") && webData.auth != ""){
-              removeAuth();
-          }
-        alert(localStorage.getItem("auth")); 
-         if(localStorage.getItem("auth") != null && localStorage.getItem("auth") != "undefined"){
-             console.log(localStorage.getItem("auth"));
+         
+        // console.log(localStorage.getItem("token"));
+         if(localStorage.getItem("token") != null && localStorage.getItem("token") != "undefined"){
+            (
+                async () => {
+                    var wl = (window.location.href.toString().substring(7).split("/")[1] !== "")? window.location.href.toString().substring(7).split("/")[1]:"/";
+                    var url = "/";
+                    
+                    switch(wl){
+                        case "/":
+                            url = "https://lin.com.ng/love/";
+                        break;
+                        case "/profile":
+                            url = "https://lin.com.ng/love/profile/";
+                        break;
+                    }
+                    
+                   const req = await fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "token": localStorage.getItem("token"),
+                            "Content-Type": "application/json"
+                        },
+                    }); 
+                   const res = await req.json();
+                     if (res.status == 1) {
+                        switch (res?.redirect) {
+                            case "let-know-you":
+                                swapAuth('sign-in', 'let-know-you');
+                                swapAuth('sign-up', 'let-know-you');
+                                break;
+                            case "add-media":
+                                swapAuth('sign-in', 'add-media');
+                                swapAuth('let-know-you', 'add-media');
+                                break;
+                            case "home":
+                                removeAuth();
+                                break;
+                        }
+                    }
+                }
+            )();
          }    
         }
         if(document.getElementById("location")){
@@ -672,7 +706,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
                 op.value = res.data.cities[i];
                 op.textContent = res.data.cities[i];
             loc.appendChild(op);
-            console.log(i);
+           // console.log(i);
             } 
             
          }else if(state == "city"){
@@ -688,6 +722,10 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
         for(let i of document.getElementsByTagName("form")){
             i.onsubmit = async function(e){
          e.preventDefault();
+         this.querySelector('.submit').disabled = true;
+         var btnContent = this.querySelector('.submit').innerHTML;
+         this.querySelector('.submit').style.background = "#ddd";
+         this.querySelector('.submit').innerHTML = "Working...";
          const formdata = new FormData(this);
          var processing = (this.getAttribute("processing") == null)?0:this.getAttribute("processing");
          if(processing==1) return;
@@ -721,6 +759,9 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
         }
         this.setAttribute("processing",0);
          console.log(res);
+         this.querySelector('.submit').disabled = false;
+          this.querySelector('.submit').style.background = "#303030";
+         this.querySelector('.submit').innerHTML = btnContent;
          if(res.status==1){
              switch(res?.redirect){
                  case "let-know-you":
@@ -761,7 +802,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
             },50);
                     },3000);
                  }
-             },500);
+             },10);
          }
         }
             
