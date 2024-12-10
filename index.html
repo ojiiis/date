@@ -603,7 +603,7 @@
                         }
                         if(res?.data){
                             for(let i = 0; i < res?.data.length; i++){
-                        let tMediasArray = res?.data[i].media.split(",");
+                        let tMediasArray = (res?.data[i].media != "")?res?.data[i].media.split(","):[];
                         var tMedias;
                         tMediasArray.map((item)=>{
                              tMedias += `<div class="card-images" data-src="https://lin.com.ng/love/media/${item}"></div>`;  
