@@ -688,11 +688,13 @@
                             
                             }
                             var uploaded = document.getElementsByClassName("uploaded");
-                            console.log(uploaded);
-                            for (let i = 0; i < uploaded.length; i++) {
-                                uploaded[i].background = `url('https://lin.com.ng/love/media/${res?.user.media.split(",")[i]}')`;
+                          
+                            for (let i = 0; i < res?.user.media.split(",").length; i++) {
+                               uploaded[i].style.backgroundImage = `url('https://lin.com.ng/love/media/${res?.user.media.split(",")[i]}')`;
+                               uploaded[i].style.backgroundPosition = "center";
+                               uploaded[i].style.backgroundSize = "cover"; 
                             }
-                             //res.user.fullname;
+                             
                          }
                     }
                 }
@@ -711,9 +713,9 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
                 op.value = i;
                 op.textContent = i;
             loc.appendChild(op);
-            //console.log(i);
+            
             }
-          //  console.log(res.data);
+          
             
              }
          )();
@@ -737,7 +739,7 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
                 op.value = res.data.cities[i];
                 op.textContent = res.data.cities[i];
             loc.appendChild(op);
-           // console.log(i);
+          
             } 
             
          }else if(state == "city"){
@@ -934,7 +936,14 @@ if(a&&b){
          if(res.status != 1){
             displayError(res.error);
          }else{
-           res.status 
+          // res.status 
+           const medias = res.current_media.split(",");
+           const currentMedia = document.getElementsByClassName("uploaded")[medias.length - 1];
+           
+           currentMedia.style.backgroundImage = `url('https://lin.com.ng/love/media/${medias[medias.length - 1]}')`;
+           currentMedia.style.backgroundPosition = "center";
+           currentMedia.style.backgroundSize = "cover"; 
+
          }
     }
     function displayError(er){
