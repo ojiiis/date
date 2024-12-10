@@ -142,13 +142,13 @@
             font-size: 1.3rem;
         }
 
-        #card-btn {
+        .card-btn {
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
         }
 
-        #card-btn button,
+        .card-btn button,.card-btn button a,
         .card-full-details button {
             padding: 10px 15px;
             background: #303030;
@@ -156,6 +156,7 @@
             border: none;
             border-radius: 5px;
             font-size: 15px;
+            text-decoration: none;
         }
 
         .container {
@@ -653,56 +654,14 @@
                                 document.getElementById("let-know-you-usersname").innerText = res.user.fullname;
                             }
                             if (res?.data && res?.redirect == "home") {
-                                for (let i = 0; i < res?.data.length; i++) {
-                                    let tMediasArray = (res?.data[i].media != "" && res?.data[i].media != "null") ? res?.data[i].media.split(",") : [];
-                                    var tMedias = "";
-                                    tMediasArray.map((item) => {
-                                        tMedias += `<div class="card-images" style="background-image:url('https://lin.com.ng/love/media/${item}');background-position:center;background-size:cover" data-src="https://lin.com.ng/love/media/${item}"></div>`;
-                                    });
-                                    document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + `<div class="novel-cards play" style="display:block">
-               <div class="novel-cards-cover">
-               ${tMedias}
-               </div>
-               <div class="novel-cards-title">
-                 <h2>${res?.data[i].fullname}</h2>
-                 <div class="card-lister">
-                     <div>Location</div>
-                     <div>${res?.data[i].city}, ${res?.data[i].state}</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>Looking for</div>
-                     <div>${res?.data[i].lookingfor}</div>
-                 </div>
-                 <div id="card-btn">
-                   
-                     <button class="likie">
-                         <span></span>Like</button>
-                     
-                       <a href="messenger.html" ><button>message</button></a>
-                      <button class="show-details" data-id="${res?.data[i].user_id}">View full profile</button>
-                 </div>
-               </div>
-               
-               <div class="card-full-details" id="card_${res?.data[i].user_id}">
-                   <div class="container">
-                     <button class="close-details" data-id="card_${res?.data[i].user_id}">Close</button>  
-                   </div>
-                   <div class="card-lister">
-                     <div>Location</div>
-                     <div>${res?.data[i].city}, ${res?.data[i].state}</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>Looking for</div>
-                     <div>${res?.data[i].lookingfor}</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>About</div>
-                     <div>${res?.data[i].about}</div>
-                 </div>
-               </div>
-            </div>`;
-                                }
-                                document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + "<script>runAhead()<\/script>";
+        console.log(res);                        
+                                
+   res?.data.forEach((item)=>{
+     let play = Play(item); 
+     document.getElementById("wrapper").appendChild(play);
+   });                             
+
+
                             }
 
 
@@ -846,23 +805,14 @@
 
         }
 
-        function runAhead() {
-            var ci = document.getElementsByClassName("card-images");
+         var ci = document.getElementsByClassName("card-images");
             for (let i of ci) {
                 i.style.backgroundImage = `url("${i.getAttribute("data-src")}")`;
 
             }
             var sd = document.getElementsByClassName("show-details"), cd = document.getElementsByClassName("close-details");
 
-            for (let i of sd) {
-                i.onclick = function () {
-                    let t = document.getElementById("card_" + this.getAttribute("data-id"));
-                    t.style.animation = "none";
-                    t.style.animation = `showcard 1s forwards`;
-                    console.log(t);
-                    t.style.display = "block";
-                }
-            }
+            
             for (let a of cd) {
                 a.onclick = function () {
                     let t = document.getElementById(this.getAttribute("data-id"));
@@ -874,8 +824,7 @@
 
                 }
             }
-        }
-        runAhead();
+        
         document.getElementById("wrapper").ondblclick = function () {
             if (document.getElementsByTagName("nav")[0].style.display == "none") {
                 document.getElementsByTagName("nav")[0].style.display = "block";
@@ -1001,6 +950,103 @@
                 }
             }, 10);
         }
+        
+        function Play(data = {}){
+     const play = document.createElement("div");
+     play.classList.add("novel-cards");
+     play.classList.add("play");
+     play.style.display = "block";
+     const playCover = document.createElement("div");
+     playCover.classList.add("novel-cards-cover");
+     data.media.split(",").forEach((item)=>{
+         
+     let cover = document.createElement("div");
+     cover.classList.add("card-images");
+     cover.setAttribute("data-src",'https://lin.com.ng/love/media/'+item);
+    playCover.appendChild(cover); 
+     });
+     
+  const playTitle = document.createElement("div");
+       playTitle.classList.add("novel-cards-title");
+      
+     const h = document.createElement("h2");
+     h.innerText = data.fullname;
+    const lo = document.createElement("div"),lf =document.createElement("div"),d1 = document.createElement("div"),d2 = document.createElement("div"),d3 = document.createElement("div"),d4 = document.createElement("div");
+    lo.classList.add("card-lister");
+    d1.innerText = 'Location';
+    d2.innerText = `${data.city}, ${data.state}.`;
+    lo.appendChild(d1);
+    lo.appendChild(d2);
+    
+    
+    
+    
+    lf.classList.add("card-lister");
+    d3.innerText = 'Looking for';
+    d4.innerText = `${data.lookingfor}`;
+    lf.appendChild(d3);
+    lf.appendChild(d4);
+    
+    const cbtn = document.createElement("div"),btn1 = document.createElement("button"),span = document.createElement("span"), btn2 = document.createElement("button"),a = document.createElement("a");
+    cbtn.classList.add("card-btn");
+    
+    btn1.classList.add("likie");
+    btn1.setAttribute("liked",0);
+     btn1.appendChild(span);
+     btn1.appendChild(document.createTextNode(" Like "))
+    
+    btn1.onclick = function () {
+                console.log(this.getAttribute("liked"));
+                if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0) {
+                    this.setAttribute("liked", "1");
+                    this.children[0].style.display = "block";
+                    this.children[0].style.animation = "none";
+                    this.children[0].style.animation = "actlike 1s forwards";
+                    setTimeout(() => {
+                        this.style.background = "#FF1493";
+                    }, 800);
+                } else if (this.getAttribute("liked") == 1) {
+
+                    this.setAttribute("liked", "0");
+                    this.style.background = "#303030";
+                    this.style.color = "#f7f7f7";
+                    this.children[0].style.display = "none";
+                    this.children[0].style.animation = "none";
+                }
+            }
+   
+    a.href="message.html";
+    a.innerHTML = "<button>message</button>";
+    btn2.classList.add("show-details");
+    btn2.onclick =  function() {
+                   
+                    let t = document.getElementById("card_" + this.getAttribute("data-id"));
+                    t.style.animation = "none";
+                    t.style.animation = `showcard 1s forwards`;
+                    
+                    t.style.display = "block";
+                };
+    btn2.setAttribute("data-id",data.user_id);
+    btn2.innerHTML = "View full profile";
+    cbtn.appendChild(btn1);       
+    cbtn.appendChild(a);  
+    cbtn.appendChild(btn2);  
+                          
+    
+    playTitle.appendChild(h);
+    playTitle.appendChild(lo);
+    playTitle.appendChild(lf);
+    playTitle.appendChild(cbtn);
+    play.appendChild(playCover);
+    play.appendChild(playTitle);
+    
+     const fullDetails = document.createElement("div");
+     console.log(play);
+     return play;
+     
+}
+
+
     </script>
 </body>
 
