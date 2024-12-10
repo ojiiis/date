@@ -523,86 +523,7 @@
                     double tab on screen to show menu
                 </h2>
             </div>
-            <div class="novel-cards play">
-               <div class="novel-cards-cover">
-                   <div class="card-images" data-src="images/4.png"></div>
-                   <div class="card-images" data-src="images/2.png"></div>
-                     <div class="card-images" data-src="images/3.png"></div>
-               </div>
-               <div class="novel-cards-title">
-                 <h2>Olaitan, 45</h2>
-                 <div class="card-lister">
-                     <div>Location</div>
-                     <div>Ibadan, Nigeria</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>Looking for</div>
-                     <div>Long time partner</div>
-                 </div>
-                 <div id="card-btn">
-                   
-                     <button class="likie">
-                         <span></span>Like</button>
-                     
-                       <a href="messenger.html" ><button>message</button></a>
-                      <button class="show-details" data-id="1">View full profile</button>
-                 </div>
-               </div>
-               
-               <div class="card-full-details" id="card_1">
-                   <div class="container">
-                     <button class="close-details" data-id="card_1">Close</button>  
-                   </div>
-                   <div class="card-lister">
-                     <div>Location</div>
-                     <div>Ibadan, Nigeria</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>Looking for</div>
-                     <div>Long time partner</div>
-                 </div>
-               </div>
-            </div>
-            <div class="novel-cards play">
-               <div class="novel-cards-cover">
-                   <div class="card-images" data-src="images/4.png"></div>
-                   <div class="card-images" data-src="images/2.png"></div>
-                     <div class="card-images" data-src="images/3.png"></div>
-               </div>
-               <div class="novel-cards-title">
-                 <h2>Olaitan, 45</h2>
-                 <div class="card-lister">
-                     <div>Location</div>
-                     <div>Ibadan, Nigeria</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>Looking for</div>
-                     <div>Long time partner</div>
-                 </div>
-                 <div id="card-btn">
-                   
-                     <button class="likie">
-                         <span></span>Like</button>
-                     
-                       <a href="messenger.html" ><button>message</button></a>
-                      <button class="show-details" data-id="1">View full profile</button>
-                 </div>
-               </div>
-               
-               <div class="card-full-details" id="card_1">
-                   <div class="container">
-                     <button class="close-details" data-id="card_1">Close</button>  
-                   </div>
-                   <div class="card-lister">
-                     <div>Location</div>
-                     <div>Ibadan, Nigeria</div>
-                 </div>
-                  <div class="card-lister">
-                     <div>Looking for</div>
-                     <div>Long time partner</div>
-                 </div>
-               </div>
-            </div>
+           
              
         </div>
         <nav id="nav">
@@ -637,7 +558,6 @@
         const webData = (!JSON.parse(localStorage.getItem('web-data'))==null)?JSON.parse(localStorage.getItem('web-data')):{};
         window.onload= function (){
          
-        // console.log(localStorage.getItem("token"));
          if(localStorage.getItem("token") != null && localStorage.getItem("token") != "undefined"){
             ( 
                 
@@ -680,6 +600,57 @@
                         }
                         if(res?.user.fullname && document.getElementById("let-know-you-usersname")){
                             document.getElementById("let-know-you-usersname").innerText = res.user.fullname;
+                        }
+                        if(res?.data){
+                            for(let i = 0; i < res?.data.length; i++){
+                        let tMediasArray = res?.data[i].media.split(",");
+                        var tMedias;
+                        tMediasArray.map((item)=>{
+                             tMedias += `<div class="card-images" data-src="https://lin.com.ng/love/media/${item}"></div>`;  
+                        });
+                             document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + `<div class="novel-cards play">
+               <div class="novel-cards-cover">
+               ${tMedias}
+               </div>
+               <div class="novel-cards-title">
+                 <h2>${res?.data[i].fullname}, ${2024 - res?.data[i].dob}</h2>
+                 <div class="card-lister">
+                     <div>Location</div>
+                     <div>${res?.data[i].city}, ${res?.data[i].state}</div>
+                 </div>
+                  <div class="card-lister">
+                     <div>Looking for</div>
+                     <div>${res?.data[i].lookingfor}</div>
+                 </div>
+                 <div id="card-btn">
+                   
+                     <button class="likie">
+                         <span></span>Like</button>
+                     
+                       <a href="messenger.html" ><button>message</button></a>
+                      <button class="show-details" data-id="1">View full profile</button>
+                 </div>
+               </div>
+               
+               <div class="card-full-details" id="card_1">
+                   <div class="container">
+                     <button class="close-details" data-id="card_1">Close</button>  
+                   </div>
+                   <div class="card-lister">
+                     <div>Location</div>
+                     <div>${res?.data[i].city}, ${res?.data[i].state}</div>
+                 </div>
+                  <div class="card-lister">
+                     <div>Looking for</div>
+                     <div>${res?.data[i].lookingfor}</div>
+                 </div>
+                  <div class="card-lister">
+                     <div>About</div>
+                     <div>${res?.data[i].about}</div>
+                 </div>
+               </div>
+            </div>`;   
+                            }
                         }
                         if (res?.user.media && document.getElementById("add-media")) {
                            if(res?.user.media.split(",").length == 4){
@@ -936,7 +907,7 @@ if(a&&b){
          if(res.status != 1){
             displayError(res.error);
          }else{
-          // res.status 
+      
            const medias = res.current_media.split(",");
            const currentMedia = document.getElementsByClassName("uploaded")[medias.length - 1];
            
@@ -959,10 +930,10 @@ if(a&&b){
                 d++;
                 setTimeout(() => {
                     let re = setInterval(() => {
-                        //
+                        
                         if ((e.offsetTop + e.offsetHeight) > 0) {
                             e.style.marginTop = e.offsetTop - 20 + "px";
-                            //console.log(e.offsetTop);
+                            
                         } else {
                             clearInterval(re);
                         }
