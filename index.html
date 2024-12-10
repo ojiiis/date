@@ -923,6 +923,7 @@ if(a&&b){
         document.getElementById("media-card-btn").onclick = ()=> document.getElementById("media").click();
     }
     document.getElementById("media").onchange = async function() {
+        document.getElementById("loading")
         const data = new FormData();
         data.append('media',this.files[0]);
          const req = await fetch('https://lin.com.ng/love/add-media',{
