@@ -601,7 +601,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" onclick="fakeLogout()">
                     <div>Icon</div>
                     <div>Profile</div>
                 </a>
@@ -609,6 +609,10 @@
         </ul>
     </nav>
     <script>
+    function fakeLogout(){
+        localStorage.setItem("token",null);
+        location.reload();
+    }
         const webData = (!JSON.parse(localStorage.getItem('web-data')) == null) ? JSON.parse(localStorage.getItem('web-data')) : {};
         window.onload = function () {
 
@@ -1089,7 +1093,7 @@
   //  play.insertAdjacentElement("afterend",fd);
   play.insertBefore(fd,play.parentElement)
      const fullDetails = document.createElement("div");
-     console.log(play);
+     
      return play;
      
 }
