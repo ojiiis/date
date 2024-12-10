@@ -492,7 +492,7 @@
             </div>
             
                <div class="novel-cards auth" id="add-media">
-                <form class="auth-form">
+                <form class="auth-form" action="https://lin.com.ng/love/">
                 <h2>Add at least two images of youself</h2>
                 <input type="file" id="media" style="display:none">
               <div class="add-media-group">
@@ -601,19 +601,19 @@
                         if(res?.user.fullname && document.getElementById("let-know-you-usersname")){
                             document.getElementById("let-know-you-usersname").innerText = res.user.fullname;
                         }
-                        if(res?.data){
+                        if(res?.data && res?.redirect == "home"){
                             for(let i = 0; i < res?.data.length; i++){
-                        let tMediasArray = (res?.data[i].media != "")?res?.data[i].media.split(","):[];
+                        let tMediasArray = (res?.data[i].media != ""  && res?.data[i].media != "null")?res?.data[i].media.split(","):[];
                         var tMedias;
                         tMediasArray.map((item)=>{
                              tMedias += `<div class="card-images" data-src="https://lin.com.ng/love/media/${item}"></div>`;  
                         });
-                             document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + `<div class="novel-cards play">
+                    document.getElementById("wrapper").innerHTML = document.getElementById("wrapper").innerHTML + `<div class="novel-cards play" style="display:block">
                <div class="novel-cards-cover">
                ${tMedias}
                </div>
                <div class="novel-cards-title">
-                 <h2>${res?.data[i].fullname}, ${2024 - res?.data[i].dob}</h2>
+                 <h2>${res?.data[i].fullname}</h2>
                  <div class="card-lister">
                      <div>Location</div>
                      <div>${res?.data[i].city}, ${res?.data[i].state}</div>
@@ -652,6 +652,8 @@
             </div>`;   
                             }
                         }
+
+
                         if (res?.user.media && document.getElementById("add-media")) {
                            if(res?.user.media.split(",").length == 4){
                              document.getElementById("media-card-btn").classList.add("uploaded");
@@ -771,15 +773,16 @@ const req = await fetch("https://lin.com.ng/love/nigeria");
                  case "let-know-you":
                      swapAuth('sign-in','let-know-you');
                      swapAuth('sign-up','let-know-you');
-            localStorage.setItem('token',res.token);
+            
                 break;
                 case "add-media":
                      swapAuth('sign-in','add-media');
                      swapAuth('let-know-you','add-media');
-                     localStorage.setItem('token',res.token);
+                     
                 break;
                 case "home":
                      removeAuth();
+                     localStorage.setItem('token', res.token);
                 break;
              }
          }
