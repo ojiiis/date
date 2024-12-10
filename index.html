@@ -835,6 +835,7 @@
                         case "home":
                             removeAuth();
                             localStorage.setItem('token', res.token);
+                            location.reload();
                             break;
                     }
                 }
