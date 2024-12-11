@@ -1043,7 +1043,9 @@
                     this.children[0].style.animation = "none";
                 }
             }
-   
+     if(data.liked){
+         btn1.style.background = "#FF1493";
+     }
     a.href="./message/"+data.user_id;
     a.innerHTML = "<button>message</button>";
     btn2.classList.add("show-details");
