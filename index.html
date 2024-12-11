@@ -655,7 +655,7 @@
                             },
                         });
                         const res = await req.json();
-                        document.getElementById("loading").style.display = "none";
+                       
                         if (res.status == 1) {
                             switch (res?.redirect) {
                                 case "let-know-you":
@@ -704,6 +704,7 @@
 
                             }
                         }
+                         document.getElementById("loading").style.display = "none";
                     }
                 )();
             }
@@ -1007,16 +1008,18 @@
     
     btn1.classList.add("likie");
     btn1.setAttribute("liked",0);
+    btn1.setAttribute("data-user", data.user_id);
      btn1.appendChild(span);
      btn1.appendChild(document.createTextNode(" Like "))
     
     btn1.onclick = function () {
-                console.log(this.getAttribute("liked"));
+               // console.log(this.getAttribute("liked"));
                 if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0) {
                     this.setAttribute("liked", "1");
                     this.children[0].style.display = "block";
                     this.children[0].style.animation = "none";
                     this.children[0].style.animation = "actlike 1s forwards";
+
                     setTimeout(() => {
                         this.style.background = "#FF1493";
                     }, 800);
