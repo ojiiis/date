@@ -1012,7 +1012,8 @@
      btn1.appendChild(span);
      btn1.appendChild(document.createTextNode(" Like "))
     
-    btn1.onclick = function () {
+    btn1.onclick = async function () {
+       // const req = await fetch("");
                // console.log(this.getAttribute("liked"));
                 if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0) {
                     this.setAttribute("liked", "1");
