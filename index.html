@@ -1013,7 +1013,15 @@
      btn1.appendChild(document.createTextNode(" Like "))
     
     btn1.onclick = async function () {
-       // const req = await fetch("");
+        const req = await fetch("https://lin.com.ng/fin/love/like",{
+            method:"POST",
+            "headers":{
+                "token":localStorage.getItem("token")
+            },
+            body:{
+                "user":btn1.getAttribute("data-user")
+            }
+        });
                // console.log(this.getAttribute("liked"));
                 if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0) {
                     this.setAttribute("liked", "1");
