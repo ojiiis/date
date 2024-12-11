@@ -1022,8 +1022,10 @@
                 "user":btn1.getAttribute("data-user")
             }
         });
+        const res = await req.json();
+       
                // console.log(this.getAttribute("liked"));
-                if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0) {
+                if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0 && res.data == 0) {
                     this.setAttribute("liked", "1");
                     this.children[0].style.display = "block";
                     this.children[0].style.animation = "none";
@@ -1032,7 +1034,7 @@
                     setTimeout(() => {
                         this.style.background = "#FF1493";
                     }, 800);
-                } else if (this.getAttribute("liked") == 1) {
+                } else if (this.getAttribute("liked") == 1 && res.data == 0) {
 
                     this.setAttribute("liked", "0");
                     this.style.background = "#303030";
