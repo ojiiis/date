@@ -30,7 +30,17 @@
             position: relative;
 
         }
-
+        .novel-cards-full-inner{
+            padding:20px;
+            height: 100%;
+            background: pink;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .novel-cards-full-inner{
+            font-size: 25px;
+        }
         .card-full-details {
             position: absolute;
             top: 100%;
@@ -170,7 +180,7 @@
         }
 
         nav ul {
-            padding: 10px 5vw;
+            padding: 5px 2.5vw;
             margin: 0;
             position: fixed;
             bottom: 0;
@@ -210,21 +220,21 @@
             text-decoration: none;
             font-weight: 600;
             color: #000;
-            text-shadow: 0px 1px 5px pink;
+            text-shadow: .2px .2px .5px #FF1493;
 
         }
 
         nav ul li a.active {
             color: #FF1493;
-            text-shadow: 0px 1px 5px #000;
+            text-shadow: .2px .2px .5px #000;
         }
 
         nav ul li a div:nth-child(1) {
-            font-size: 26px;
+            font-size: 22px;
         }
 
         nav ul li a div:nth-child(2) {
-            font-size: 15px;
+            font-size: 10px;
         }
 
         .likie {
@@ -285,7 +295,7 @@
 
         .auth-form .input-group {
             width: 90%;
-            height: 50px;
+            height: auto;
             flex-shrink: 0;
             margin-bottom: 20px;
 
@@ -298,9 +308,10 @@
             padding: 10px;
             border: none;
             outline: 0;
+            display: inline-block;
 
         }
-
+        
         .auth-form button {
 
             padding: 15px 25px;
@@ -310,6 +321,7 @@
             color: #f7f7f7;
             margin: 10px;
             border-radius: 10px;
+             display: inline-block;
         }
 
         .add-media-group {
@@ -521,7 +533,7 @@
                         <option value=""> Select an option </option>
                         <option value="Male"> Male</option>
                         <option value="Female"> Female</option>
-                        <option value="Both"> Both Male & Female</option>
+                        <option value="Both Male & Female"> Both Male & Female</option>
                     </select>
                 </div>
 
@@ -534,12 +546,11 @@
 
                 <div class="input-group">
                     <label>Provide a brief introduction about yourself</label>
-                    <textarea name="about" rows="150" type="text"
+                    <textarea name="about" rows="10" 
                         placeholder="Hello, I am a passionate individual with a love for learning and collaboration."></textarea>
                 </div>
 
                 <div class="input-group">
-
                     <button type="submit" class="submit">Continue</button>
                 </div>
             </form>
@@ -572,10 +583,10 @@
             </form>
         </div>
         <div class="novel-cards play">
-            <h2>
-                Scroll up and down to view users.
-                double tab on screen to show menu
-            </h2>
+           <div class="novel-cards-full-inner">
+                <h2>Scroll up and down to browse users.</h2>
+               <h2>Double tab on screen to show menu</h2>
+           </div>
         </div>
 
 
@@ -666,7 +677,7 @@
                                 document.getElementById("let-know-you-usersname").innerText = res.user.fullname;
                             }
                             if (res?.data && res?.redirect == "home") {
-        console.log(res);                        
+                              
                                 
    res?.data.forEach((item)=>{
      let play = Play(item); 
@@ -722,15 +733,14 @@
                         const req = await fetch(`https://lin.com.ng/love/nigeria/${this.value}`);
                         document.getElementById("state").value = this.value;
                         this.parentElement.children[0].innerText = `Where in ${this.value} do you live?`;
-
-                        this.innerHTML = `<option value="">Select a place in ${this.value}</option>`;
-
                         this.value = "";
+                        this.innerHTML = `<option value="">Select a place in ${this.value}</option>`;
+                        this.required = true;
                         const res = await req.json();
                         this.setAttribute("data-state", "city");
                         
                         for (let i = 0; i < res.data.cities.length; i++) {
-
+                            this.required = true;
                             let op = document.createElement("option");
                             op.value = res.data.cities[i];
                             op.textContent = res.data.cities[i];
@@ -798,7 +808,8 @@
                         case "let-know-you":
                             swapAuth('sign-in', 'let-know-you');
                             swapAuth('sign-up', 'let-know-you');
-                       document.getElementById("let-know-you-usersname").innerText = res.data?.fullname;
+                    
+                       document.getElementById("let-know-you-usersname").innerText = res.data;
                          localStorage.setItem('token', res.token);
                             break;
                         case "add-media":
@@ -974,7 +985,7 @@
        playTitle.classList.add("novel-cards-title");
       
      const h = document.createElement("h2");
-     h.innerText = data.fullname;
+     h.innerText = `${data.fullname}, ${new Date().getFullYear() - data.dob.split("-")[0]}.`;
     const lo = document.createElement("div"),lf =document.createElement("div"),d1 = document.createElement("div"),d2 = document.createElement("div"),d3 = document.createElement("div"),d4 = document.createElement("div");
     lo.classList.add("card-lister");
     d1.innerText = 'Location';
@@ -1019,7 +1030,7 @@
                 }
             }
    
-    a.href="message.html";
+    a.href="./message/"+data.user_id;
     a.innerHTML = "<button>message</button>";
     btn2.classList.add("show-details");
     btn2.onclick =  function() {
