@@ -2,6 +2,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             padding: 0;
@@ -71,6 +72,10 @@
             background: rgb(255, 255, 255, 0.7);
 
 
+        }
+        sub a{
+            text-decoration: none;
+            color: #FF1493;
         }
 
         @keyframes showcard {
@@ -180,11 +185,11 @@
         }
 
         nav ul {
-            padding: 5px 2.5vw;
+            padding: 5px;
             margin: 0;
             position: fixed;
             bottom: 0;
-            left: -3vw;
+            left: 0;
             display: flex;
             width: 95vw;
 
@@ -229,11 +234,12 @@
             text-shadow: .2px .2px .5px #000;
         }
 
-        nav ul li a div:nth-child(1) {
-            font-size: 22px;
+        nav ul li a .fa {
+            font-size: 25px;
+            margin-bottom: 5px;
         }
 
-        nav ul li a div:nth-child(2) {
+        nav ul li a div {
             font-size: 10px;
         }
 
@@ -429,7 +435,7 @@
         }
 
         .button-group {
-            width: 100%;
+            padding:20px;
             display: flex;
             justify-content: space-evenly;
         }
@@ -446,10 +452,32 @@
             z-index: 99999999999999999999;
             background: #FF1493;
         }
+        #network-error{
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999999999999999999;
+            background: #FF1493;
+        }
     </style>
 </head>
 
 <body>
+     <div id="network-error">
+         <img src="images/loading.gif">
+         <h3>Some Error</h3>
+         <div class="button-group">
+             <button>Retry</button>
+         </div>
+     </div>
+    
+
     <div id="loading"><img src="images/loading.gif"></div>
     <div id="error-card">
 
@@ -595,25 +623,25 @@
         <ul>
             <li>
                 <a href="#" class="active">
-                    <div>Icon</div>
+                    <i class="fa fa-user"></i>
                     <div>Meet</div>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <div>Icon</div>
+                     <i class="fa fa-search"></i>
                     <div>Search</div>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <div>Icon</div>
+                     <i class="fa fa-comment"></i>
                     <div>Message</div>
                 </a>
             </li>
             <li>
                 <a href="#" onclick="fakeLogout()">
-                    <div>Icon</div>
+                   <i class="fa fa-user"></i>
                     <div>Profile</div>
                 </a>
             </li>
@@ -713,7 +741,10 @@
             var loc = document.getElementById("location");
             if (loc.options.length == 1) {
                 (
-                    async () => {
+                    
+                        async () => {
+                            
+                     try{       
                         const req = await fetch("https://lin.com.ng/love/nigeria");
                         const res = await req.json();
                         for (let i in res.data) {
@@ -723,9 +754,16 @@
                             loc.appendChild(op);
 
                         }
-
+                        }catch(e){
+                        
+           document.getElementById("network-error").style.display = "flex";               
+                        
+                        
+                            
+                        }
 
                     }
+                  
                 )();
 
                 loc.onchange = async function () {
@@ -1013,19 +1051,26 @@
      btn1.appendChild(document.createTextNode(" Like "))
     
     btn1.onclick = async function () {
-        const req = await fetch("https://lin.com.ng/fin/love/like",{
+     var res = [];
+      try{
+            const req = await fetch("https://lin.com.ng/love/like",{
             method:"POST",
             "headers":{
+                "Content-Type":"application/json",
                 "token":localStorage.getItem("token")
             },
-            body:{
+            body:JSON.stringify({
                 "user":btn1.getAttribute("data-user")
-            }
+            })
         });
         const res = await req.json();
+      }catch(e){
+          console.log(e);
+      }
+        
        
                // console.log(this.getAttribute("liked"));
-                if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0 && res.data == 0) {
+                if (this.getAttribute("liked") == null || this.getAttribute("liked") == 0) {
                     this.setAttribute("liked", "1");
                     this.children[0].style.display = "block";
                     this.children[0].style.animation = "none";
@@ -1034,7 +1079,7 @@
                     setTimeout(() => {
                         this.style.background = "#FF1493";
                     }, 800);
-                } else if (this.getAttribute("liked") == 1 && res.data == 0) {
+                } else if (this.getAttribute("liked") == 1) {
 
                     this.setAttribute("liked", "0");
                     this.style.background = "#303030";
@@ -1107,7 +1152,7 @@
     d42.innerText = data.lookingfor;
     lf2.appendChild(d32);
     lf2.appendChild(d42);
-    fd.appendChild(bbtn);
+    fd.appendChild(cn);
     fd.appendChild(lo2);
     fd.appendChild(lf2);
     fd.appendChild(about);
