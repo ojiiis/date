@@ -489,7 +489,7 @@
            }
             window.onload = async function () {
             localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
-             const req = await fetch("https://lin.com.ng/love/emapi/list/2",{
+             const req = await fetch("https://lin.com.ng/love/emapi/list/1",{
                 method:"GET",
                 headers:{
                     "Content-Type":"application/json",
@@ -497,6 +497,15 @@
                 }
              });
              const res = await req.json();
+    
+               const req1 = await fetch("https://lin.com.ng/love/emapi/messages/read/someid2/1", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "token": localStorage.getItem("token")
+                    }
+                });
+                const res1 = await req1.json();
 
             
             }
