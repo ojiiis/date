@@ -406,7 +406,7 @@
                   <h3>${data.fullname}</h3> 
               </div>
               
-             <div class="messsges" id="chat-${data.list_id}">
+             <div class="messsges" id="chat-${data.list_id}" onscroll="msb_scroll(this)">
                  ${loadchat(data.init_messages)}
              </div>
              <form class="input" onsubmit="send_chat(this,event)" data-id="${data.list_id}">
@@ -500,9 +500,9 @@
                document.body.style.height = `${fh}px`;
            }
             window.onload =  function () {
-   localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
+ //   localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
              
-  //  localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
+    localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
              
     
          //      const a = uiR("https://lin.com.ng/love/emapi/messages/read/someid2/1",'GET');
@@ -570,7 +570,7 @@
             }
             
             
-            /*function msb_scroll(d){
+            function msb_scroll(d){
                 
        let msgs =  d.children;
          // let msgs = d.children;
@@ -596,7 +596,7 @@
            
                 }
           
-            } */
+            }
             
             function cb_show(d){
                    
@@ -613,15 +613,39 @@
                 document.getElementById("chat-list").style.animation = "ls 0.4s forwards";
                 
      
-                       
-     uiR("https://lin.com.ng/love/emapi/seen",'POST',{
-           "lid":d.getAttribute("data-id")
-       }).then((b)=>{
-            
-          document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';
-       });
+          
      
+            setTimeout(()=>{
+         
+        const cdom = document.getElementById("center-"+d.getAttribute("data-id"));
+        
+        
+         let msgs =  document.getElementById('chat-'+d.getAttribute("data-id")).children;
+         
+          //for every visible message thats not beign read should be updated
+                for(let i = 0; i < msgs.length; i++){
+           
+         
+       if((msgs[i].offsetTop - document.getElementById(d.getAttribute("data-id")).scrollTop) < (document.getElementById(d.getAttribute("data-id")).clientHeight + 10)  && (msgs[i].offsetTop - document.getElementById(d.getAttribute("data-id")).scrollTop) > 0){
+  
+   if(msgs[i].classList.contains("other") && msgs[i].getAttribute("data-seen") == 0){
+       msgs[i].setAttribute("data-seen",1);
+     
+     uiR("https://lin.com.ng/love/emapi/seen",'POST',{
+           "lid":msgs[i].getAttribute("data-lid"),
+           "mid":msgs[i].getAttribute("data-mid")
+       }).then((b)=>{
+             let nc = document.getElementById(`c-${msgs[i].getAttribute("data-lid")}`).innerText - 1;
+          document.getElementById(`c-${msgs[i].getAttribute("data-lid")}`).innerHTML = (nc > 0)?`<i>${nc}</i>`:''
+       });
+   }     
+           }
             
+                }
+                
+                
+            },500);
+                
         
         
                 
