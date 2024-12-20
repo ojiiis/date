@@ -1235,11 +1235,35 @@ let pid = u.getAttribute("data-pid");
     document.getElementById("pm-btn").setAttribute("data-pid",pid);
     document.getElementById("pm-div").style.display = "flex";
 }
-document.getElementById("pm-btn").onclick = function(){
+
+
+document.getElementById("pm-btn").onclick = async function(){
     let msg = document.getElementById("pm-msg").value;
-    if(msg.length > 0 && msg != " "){
-        
-    }
+let pid = document.getElementById("pm-btn").getAttribute("data-pid");
+  this.disabled = true;
+  
+  const req = await fetch("https://lin.com.ng/love/emapi/send_message",{
+      method:"POST",
+      headers:{
+          "token":localStorage.getItem("token"),
+          "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+          message:msg,
+          pid:pid
+      })
+  });
+  const a = await req.json();
+  
+       if(a.status == 1){
+    document.getElementById("pm-msg").value = "";           
+    
+           }
+           
+ document.getElementById("pm-msg-callback").style.display = "block";
+   
+ document.getElementById("pm-msg-callback").innerText   = a.message;
+ this.disabled = false;
 }
 
 document.getElementById("close-pm").onclick = function(){

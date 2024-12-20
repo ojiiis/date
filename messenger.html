@@ -401,7 +401,7 @@
                
              let cboard = `<div class="chat-board" id="${data.list_id}">
               <div class="cb-header">
-                  <button class="close-chat-board" onclick="close_cboard(this)">Back</button>
+                  <button class="close-chat-board" onclick="close_cboard(this)" data-id="${data.list_id}">Back</button>
                   <div class="cb-avi" style="background-image:url('https://lin.com.ng/love/media/${data.avi}');background-size:cover;background-position:center"></div>
                   <h3>${data.fullname}</h3> 
               </div>
@@ -500,9 +500,9 @@
                document.body.style.height = `${fh}px`;
            }
             window.onload =  function () {
-//   localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
+  // localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
              
-    localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
+ //   localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
              
     
  
@@ -601,7 +601,7 @@
           
        }
    });
-   //   console.log("closing to top");    
+    
       }
       
 
@@ -649,8 +649,8 @@
                    i.parentElement.parentElement.style.animation = "cbo 0.5s forwards"
                    document.getElementById("chat-list").style.animation = "lso 0.4s forwards";
                  localStorage.setItem("opened-chat","");
-                //   if(document.getElementById(`c-${d.getAttribute("data-id")}`)){
-              //  document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';  }
+                   if(document.getElementById(`center-${i.getAttribute("data-id")}`)){
+                document.getElementById(`center-${i.getAttribute("data-id")}`).innerHTML = '';  }
                } 
          function listen(){
             
@@ -669,7 +669,8 @@
                let msgs = loadchat(data.data);
                let d = document.getElementById("chat-"+opened);
            d.innerHTML =  d.innerHTML  + msgs;        
-            if(d.scrollHeight - (d.scrollTop + d.clientHeight) < ((d.scrollTop + d.clientHeight) * 0.04)){
+  ;
+            if(d.scrollHeight - (d.scrollTop + d.clientHeight) < ((d.scrollTop + d.clientHeight) * 0.06)){
      d.scrollTop = d.scrollHeight;
  }
                     }
