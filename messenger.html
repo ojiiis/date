@@ -406,7 +406,7 @@
                   <h3>${data.fullname}</h3> 
               </div>
               
-             <div class="messsges" id="chat-${data.list_id}">
+             <div class="messsges" id="chat-${data.list_id}" onscroll="cb_scroll(this)">
                  ${loadchat(data.init_messages)}
              </div>
              <form class="input" onsubmit="send_chat(this,event)" data-id="${data.list_id}">
@@ -568,35 +568,58 @@
                 i.style.backgroundSize = "cover";
                     i.style.backgroundPosition = "center";
             }
-            
-            
-            /*function msb_scroll(d){
-                
-       let msgs =  d.children;
-         // let msgs = d.children;
-                for(let i = 0; i < msgs.length; i++){
-           // 
-                
-        
-           if((msgs[i].offsetTop - d.scrollTop) < (d.clientHeight + 10)  && (msgs[i].offsetTop - d.scrollTop) > 0){
-  
-        
-   if(msgs[i].classList.contains("other") && msgs[i].getAttribute("data-seen") == 0){
+    const clean_last_msg = (d,)=>{
+      if(d.children[d.children.length - 1].id.includes("center-")){
+          return 
+      }
+    }      
+    var eu = false,ed = false;      
+    function cb_scroll(d){
        
-       msgs[i].setAttribute("data-seen",1); 
-     let a =  uiR("https://lin.com.ng/love/emapi/seen",'POST',{
-           "lid":msgs[i].getAttribute("data-lid"),
-           "mid":msgs[i].getAttribute("data-mid")
-       }).then((b)=>{
-           let nc = document.getElementById(`c-${msgs[i].getAttribute("data-lid")}`).innerText - 1;
-          document.getElementById(`c-${msgs[i].getAttribute("data-lid")}`).innerHTML = (nc > 0)?`<i>${nc}</i>`:''
-       });
-   }       
-           }
-           
-                }
+     // es = true;
+       
+     //  console.log(e);
+         // let msgs = d.children;
+         
+    /* if((d.offsetTop - d.scrollTop) < (d.clientHeight + 10)  && (msgs[i].offsetTop - d.scrollTop) > 0){
+                 
+             }
+             
+             */
+      //  console.log(d.scrollHeight - d.scrollTop);   alert(100*0.3);   
+      if(d.scrollTop < (d.clientHeight * 0.3)){
+  
+  
+         // let e =  d.children[0];
+    if(eu == true)return;  
+    eu = true;
+   //uiR  d.a
+   
+    let a = d.children;
+       let e = "";
+       for(let i = 0; i < a.length;i++){
+          if(!a[i].id.toString().includes("center-") && e == ""){
+               e = a[i];
+              
+          } 
+       }
+       
+   uiR("https://lin.com.ng/love/emapi/messages/up","POST",{
+       "key":e.getAttribute("data-mid"),
+       "list_id":e.getAttribute("data-lid")
+   }).then(data=>{
+       if(data.status == 1){
+           let msgs = loadchat(data.data);
+           d.innerHTML = msgs + d.innerHTML;
+            eu = false;
           
-            } */
+       }
+   });
+   //   console.log("closing to top");    
+      }
+ 
+     // console.log();    
+            } 
             
             function cb_show(d){
                    
@@ -611,17 +634,22 @@
                 document.getElementById("center-"+d.getAttribute("data-id")).scrollIntoView();   
                 document.getElementById(d.getAttribute("data-id")).style.animation = "cbi 0.5s forwards";
                 document.getElementById("chat-list").style.animation = "ls 0.4s forwards";
+                localStorage.setItem("opened-chat",d.getAttribute("data-id"));
                 
      
-                       
+            
+   if(document.getElementById('center-'+d.getAttribute("data-id")) && document.getElementById('center-'+d.getAttribute("data-id")).innerText.length > 0){
+                         
      uiR("https://lin.com.ng/love/emapi/seen",'POST',{
            "lid":d.getAttribute("data-id")
        }).then((b)=>{
-            
-          document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';
+            if(document.getElementById(`c-${d.getAttribute("data-id")}`)){
+                document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';
+            }
+    
        });
      
-            
+            }      
         
         
                 
@@ -633,8 +661,35 @@
                  
                    i.parentElement.parentElement.style.animation = "cbo 0.5s forwards"
                    document.getElementById("chat-list").style.animation = "lso 0.4s forwards";
-                 
+                 localStorage.setItem("opened-chat","");
+                //   if(document.getElementById(`c-${d.getAttribute("data-id")}`)){
+              //  document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';  }
                } 
+         function listen(){
+            
+             var run = setInterval(async function(){
+            var opened = localStorage.getItem("opened-chat");
+            
+          //clearInterval(run);
+          
+            if(opened == null || opened == ""){
+                
+            }else{
+                uiR("https://lin.com.ng/love/emapi/new-messages","POST",{
+                    "cid":opened
+                }).then(data=>{
+                    if(data.status == 1){
+               let msgs = loadchat(data.data);
+           document.getElementById("chat-"+opened).innerHTML =  document.getElementById("chat-"+opened).innerHTML  + msgs;         
+                    }
+                  //  console.log(a);
+                }); 
+            }
+           // console.log("listening to new message for "+opened);
+         },1500);
+             
+         }    
+         listen();
         </script>
     </body>
 </html>
