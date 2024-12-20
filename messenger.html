@@ -367,7 +367,7 @@
                    <div class="peeps active away" data-src="images/1.png"></div>
                     <div class="peeps active online" data-src="images/1.png"></div>
                     </div>
-                    <a href="javascript:void(0)">Back</a>
+                    <a href="./">Back</a>
               </div>
               <div class="container" id="sp">
                   <input type="search" placeholder="Search peeps..." id="search-peep">
@@ -444,7 +444,7 @@
            uiR("https://lin.com.ng/love/emapi/send_message",'POST',data).then((a)=>{
                console.log(a);
         document.getElementById(id).setAttribute("data-mid",a.data.mid);
-      //  document.getElementById("time-"+el.getAttribute("data-id")).innerHTML = a.data.time;
+  
       document.getElementById(id).children[2].children[0].innerText = a.data.time;
     document.getElementById(id).children[2].children[1].innerText = "sent";
     
@@ -500,21 +500,20 @@
                document.body.style.height = `${fh}px`;
            }
             window.onload =  function () {
-   localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
+//   localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
              
-  //  localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
+    localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
              
     
-         //      const a = uiR("https://lin.com.ng/love/emapi/messages/read/someid2/1",'GET');
+ 
        
        const b = uiR("https://lin.com.ng/love/emapi/list/1",'GET');
        b.then((a)=>{
-          //  if(a.status)
-       //   console.log(a);
-           list(a?.data);  
-           // console.log(a);
-           
-           //loadchat(d);
+      
+            if(a?.data.length > 0){
+                list(a?.data); 
+            }
+ 
        });
        
          
@@ -542,11 +541,11 @@
                 body:JSON.stringify(body)
              });
                     }
-            //console.log(await req.text());
+    
             return await req.json();
                 }catch(e){
                if(confirm(e+", retry.")){
-                  // return uiR(url,method);
+               //action if error occur
                }
                 }
             }
@@ -575,26 +574,13 @@
     }      
     var eu = false,ed = false;      
     function cb_scroll(d){
-       
-     // es = true;
-       
-     //  console.log(e);
-         // let msgs = d.children;
-         
-    /* if((d.offsetTop - d.scrollTop) < (d.clientHeight + 10)  && (msgs[i].offsetTop - d.scrollTop) > 0){
-                 
-             }
-             
-             */
-      //  console.log(d.scrollHeight - d.scrollTop);   alert(100*0.3);   
+
       if(d.scrollTop < (d.clientHeight * 0.3)){
   
-  
-         // let e =  d.children[0];
+ 
     if(eu == true)return;  
     eu = true;
-   //uiR  d.a
-   
+
     let a = d.children;
        let e = "";
        for(let i = 0; i < a.length;i++){
@@ -617,8 +603,9 @@
    });
    //   console.log("closing to top");    
       }
- 
-     // console.log();    
+      
+
+
             } 
             
             function cb_show(d){
@@ -680,9 +667,13 @@
                 }).then(data=>{
                     if(data.status == 1){
                let msgs = loadchat(data.data);
-           document.getElementById("chat-"+opened).innerHTML =  document.getElementById("chat-"+opened).innerHTML  + msgs;         
+               let d = document.getElementById("chat-"+opened);
+           d.innerHTML =  d.innerHTML  + msgs;        
+            if(d.scrollHeight - (d.scrollTop + d.clientHeight) < ((d.scrollTop + d.clientHeight) * 0.04)){
+     d.scrollTop = d.scrollHeight;
+ }
                     }
-                  //  console.log(a);
+           
                 }); 
             }
            // console.log("listening to new message for "+opened);

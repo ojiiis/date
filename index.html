@@ -465,6 +465,52 @@
             z-index: 99999999999999999999;
             background: #FF1493;
         }
+        #pm-div{
+            position: fixed;
+            top:0;
+            left:0;
+            height: 100%;
+            width: 100%;
+            background: rgb(0,0,0,0.3);
+            z-index:9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display:none;
+        }
+        
+        #pm-div-center{
+            width: 80%;
+            max-width: 400px;
+            height: auto;
+            max-height:50%;
+           background: #fff; 
+           padding: 20px;
+           border-radius:10px;
+        }
+        
+          #pm-div-center input{
+            padding:20px;
+            width: 100%;
+            height: 70px;
+        }
+        
+          #pm-div-center button{
+            padding:5px;
+            width: 45%;
+            background: #303030;
+            border:none;
+            border-radius: 5px;
+            color:#f7f7f7;
+        }
+        
+        #pm-div-center button.red{
+            background: red;
+            
+        }
+        #pm-msg-callback{
+            display: none;
+        }
     </style>
 </head>
 
@@ -482,7 +528,16 @@
     <div id="error-card">
 
     </div>
-
+    <div id="pm-div">
+        <div id="pm-div-center">
+            <input type="text" placeholder="Type your message." id="pm-msg">
+          <div class="button-group">
+                <button id="pm-btn" data-pid="">Send messege</button>
+                  <button id="close-pm"class="red">Close</button>
+          </div>
+          <div id="pm-msg-callback">Message Sent</div>
+        </div>
+    </div>
     <div id="wrapper">
         <div class="novel-cards auth" id="sign-in">
             <form class="auth-form" action="https://lin.com.ng/love/signin">
@@ -634,9 +689,9 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="messenger.html">
                      <i class="fa fa-comment"></i>
-                    <div>Message</div>
+                    <div>Messages</div>
                 </a>
             </li>
             <li>
@@ -1092,8 +1147,8 @@
          btn1.style.background = "#FF1493";
          btn1.setAttribute("liked", "1");
      }
-    a.href="./message/"+data.user_id;
-    a.innerHTML = "<button>message</button>";
+    a.href="javascript:void(0)";
+    a.innerHTML = "<button onclick='popUpMsg(this)' data-pid="+data.user_id+">message</button>";
     btn2.classList.add("show-details");
     btn2.onclick =  function() {
                    
@@ -1174,6 +1229,23 @@
      
 }
 
+function popUpMsg(u){
+    
+let pid = u.getAttribute("data-pid");
+    document.getElementById("pm-btn").setAttribute("data-pid",pid);
+    document.getElementById("pm-div").style.display = "flex";
+}
+document.getElementById("pm-btn").onclick = function(){
+    let msg = document.getElementById("pm-msg").value;
+    if(msg.length > 0 && msg != " "){
+        
+    }
+}
+
+document.getElementById("close-pm").onclick = function(){
+    document.getElementById("pm-div").style.display = "none";
+    
+}
 
     </script>
 </body>
