@@ -362,11 +362,10 @@
           <div id="chat-list">
               <div id="peeps-online">
                   <div id="inner">
-                
-                  <div>
-                      <h2>Messeges</h2>
-                     
-                  </div>
+                  <div class="peeps active online" data-src="images/1.png"></div>
+                  <div class="peeps offline" data-src="images/1.png"></div>
+                   <div class="peeps active away" data-src="images/1.png"></div>
+                    <div class="peeps active online" data-src="images/1.png"></div>
                     </div>
                     <a href="./">Back</a>
               </div>
@@ -501,7 +500,13 @@
                document.body.style.height = `${fh}px`;
            }
             window.onload =  function () {
-
+  // localStorage.setItem("token","PqzXuatBDYLwZzBmE1lF8oS2GaHS2H");
+             
+ //   localStorage.setItem("token","OYIDdfrqLLFDFLdOqZa8PdNWPiYGd6");
+             
+    
+ 
+       
        const b = uiR("https://lin.com.ng/love/emapi/list/1",'GET');
        b.then((a)=>{
       
@@ -626,7 +631,7 @@
            "lid":d.getAttribute("data-id")
        }).then((b)=>{
             if(document.getElementById(`c-${d.getAttribute("data-id")}`)){
-             document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';
+                document.getElementById(`c-${d.getAttribute("data-id")}`).innerHTML = '';
             }
     
        });
@@ -645,10 +650,7 @@
                    document.getElementById("chat-list").style.animation = "lso 0.4s forwards";
                  localStorage.setItem("opened-chat","");
                    if(document.getElementById(`center-${i.getAttribute("data-id")}`)){
-                document.getElementById(`center-${i.getAttribute("data-id")}`).innerHTML = ''; 
-                }
-                
-                
+                document.getElementById(`center-${i.getAttribute("data-id")}`).innerHTML = '';  }
                } 
          function listen(){
             
@@ -666,10 +668,6 @@
                     if(data.status == 1){
                let msgs = loadchat(data.data);
                let d = document.getElementById("chat-"+opened);
-                  if(document.getElementById(`center-${opened}`)){
-                document.getElementById(`center-${opened}`).innerHTML = ''; 
-                }
-                
            d.innerHTML =  d.innerHTML  + msgs;        
   ;
             if(d.scrollHeight - (d.scrollTop + d.clientHeight) < ((d.scrollTop + d.clientHeight) * 0.06)){
